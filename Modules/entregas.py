@@ -5,7 +5,7 @@ from random import randint
 
 class new_entrega:
      def __init__(self, user_id, destinatario, celular, rg, cpf, cep, numero, complemento = ""):
-         self.datajson = {"Destinatario":destinatario, "RG":rg, "CPF": None,"Celular":celular}
+         self.datajson = {"id": randint(100000000000, 999999999999),"Destinatario":destinatario, "RG":rg, "CPF": None,"Celular":celular}
          self.user_id = user_id
          self.cpf = cpf
          self.cep = cep
@@ -61,16 +61,30 @@ class get_entrega:
         self.id = id
         self.local_file = "Dados" + sep + "Entregas.json"
         
-    def open_file(self):
+    def get_from_user(self):
         """Abre o arquivo e retorna as entregas"""
         try:
             with open(self.local_file, "r") as arq:
                 dados = json.load(arq)
         except FileNotFoundError as error:
-            print(f"Modulo entregas \nclass get_entrega \ndef open_file \n{error}")
+            print(f"Modulo entregas \nclass get_from_user \ndef open_file \n{error}")
             return False, "NENHUMA ENTREGA ENCONTRADA"
         entregas = []
         for entrega in dados["Entregas"]:
             if list(entrega.keys())[0] == self.id:
                 entregas.append(entrega)
+        return True, entregas
+        
+    def get_from_entregaId(self):
+        """Abre o arquivo e retorna as entrega com o id correspondente"""
+        try:
+            with open(self.local_file, "r") as arq:
+                data = json.load(arq)
+        except FileNotFoundError as error:
+            print(f"Modulo entregas \nclass get_from_userId \ndef open_file \n{error}")
+            return False, "NENHUMA ENTREGA ENCONTRADA"
+        entregas = []
+        for entrega in data["Entregas"]:
+             if entrega[list(entrega.keys())[0]]["id"] == self.id:
+                 entregas.append(entrega)
         return True, entregas
