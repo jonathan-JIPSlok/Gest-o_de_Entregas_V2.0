@@ -9,7 +9,17 @@ class types:
         with open(self.localfile, "r") as arq:
             data = json.load(arq)
             data = data["Users_Types"]
-        return data.keys()
+            
+        return True, data.keys()
+        
+    def get_users_permissions(self, user_type):
+        with open(self.localfile, "r") as arq:
+            data = json.load(arq)
+            data = data["Users_Types"]
+        try:
+            return True, data[user_type]
+        except KeyError:
+            return False, "TIPO DE USUARIO NÃO EXISTENTE"
         
     def create_frisht_types(self):
         with open(self.localfile, "a+") as arq:
